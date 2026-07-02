@@ -50,12 +50,14 @@ export async function GET(req: NextRequest) {
           userId: user.id,
           isActive: true,
           fullName: repo.full_name,
+          installationId: installationId,
         },
         create: {
           userId: user.id,
           githubRepoId: repo.id.toString(),
           fullName: repo.full_name,
           isActive: true,
+          installationId: installationId,
         }
       });
     }

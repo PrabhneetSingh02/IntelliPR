@@ -87,10 +87,10 @@ export default async function DashboardPage() {
               <h3 className="text-lg font-medium text-slate-200">No repositories connected</h3>
               <p className="text-slate-400 mt-2 mb-6">You haven't installed the GitHub app on any repositories yet.</p>
               <a 
-                href="https://github.com/settings/apps/intellipr/installations" 
+                href="https://github.com/apps/intellipr/installations/new" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-indigo-600 text-white hover:bg-indigo-700 h-10 px-4 py-2"
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-300 disabled:pointer-events-none disabled:opacity-50 bg-indigo-600 text-white shadow hover:bg-indigo-700 h-9 px-4 py-2"
               >
                 Connect GitHub
               </a>

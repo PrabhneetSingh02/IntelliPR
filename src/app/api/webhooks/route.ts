@@ -83,6 +83,50 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    if (event === 'installation_repositories') {
+      const { action, installation, repositories_added, repositories_removed } = payload;
+
+      // We need to find the user associated with this installation.
+      // Since all repos for an installation share the same user, we can find the user from the first existing repo.
+      const existingRepo = await prisma.repository.findFirst({
+        where: { installationId: installation.id }
+      });
+      console.log("[Webhook] Existing repo:", existingRepo);
+      const userId = existingRepo?.userId;
+
+      if (action === 'added' || action === 'removed') {
+        if (repositories_added && repositories_added.length > 0 && userId) {
+          for (const repo of repositories_added) {
+            await prisma.repository.upsert({
+              where: { githubRepoId: repo.id.toString() },
+              update: {
+                userId: userId,
+                isActive: true,
+                fullName: repo.full_name,
+                installationId: installation.id,
+              },
+              create: {
+                userId: userId,
+                githubRepoId: repo.id.toString(),
+                fullName: repo.full_name,
+                isActive: true,
+                installationId: installation.id,
+              }
+            });
+          }
+        }
+
+        if (repositories_removed && repositories_removed.length > 0) {
+          for (const repo of repositories_removed) {
+            await prisma.repository.update({
+              where: { githubRepoId: repo.id.toString() },
+              data: { isActive: false }
+            });
+          }
+        }
+      }
+    }
+
     return NextResponse.json({ success: true }, { status: 200 });
 
   } catch (error) {

@@ -32,7 +32,7 @@ export default function DashboardLayout({
         
         <div className="p-4 border-t border-white/10">
           <a 
-            href="https://github.com/settings/apps/intellipr/installations" 
+            href="https://github.com/apps/intellipr/installations/new" 
             target="_blank" 
             rel="noopener noreferrer"
             className="flex w-full items-center justify-center px-4 py-2 rounded-lg bg-indigo-600/20 text-indigo-400 text-sm font-medium hover:bg-indigo-600/30 transition-colors border border-indigo-500/20"

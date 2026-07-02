@@ -32,8 +32,8 @@ const worker = new Worker<ReviewPRJobData>(
       console.log('Posting review to GitHub...');
       await postPullRequestReview(installationId, owner, repo, pullRequestNumber, reviewResult);
 
-      // 4. Update Database Status
-      await updatePRStatus(repositoryId, pullRequestNumber, 'reviewed');
+      // 4. Update Database Status & Save Review Stats
+      await updatePRStatus(repositoryId, pullRequestNumber, 'reviewed', reviewResult);
       console.log(`Successfully reviewed ${owner}/${repo}#${pullRequestNumber}`);
 
     } catch (error) {
@@ -45,9 +45,9 @@ const worker = new Worker<ReviewPRJobData>(
   { connection }
 );
 
-async function updatePRStatus(repositoryId: string, prNumber: number, status: string) {
+async function updatePRStatus(repositoryId: string, prNumber: number, status: string, reviewResult?: any) {
   try {
-    await prisma.pullRequest.update({
+    const pr = await prisma.pullRequest.update({
       where: {
         repositoryId_githubPrNumber: {
           repositoryId: repositoryId,
@@ -56,6 +56,17 @@ async function updatePRStatus(repositoryId: string, prNumber: number, status: st
       },
       data: { status }
     });
+
+    if (reviewResult) {
+      await prisma.review.create({
+        data: {
+          pullRequestId: pr.id,
+          summary: reviewResult.summary,
+          issuesFoundCount: reviewResult.comments?.length || 0,
+          cost: 0 // Tokens could be calculated here in the future
+        }
+      });
+    }
   } catch (err) {
     console.error('Failed to update PR status in DB:', err);
   }

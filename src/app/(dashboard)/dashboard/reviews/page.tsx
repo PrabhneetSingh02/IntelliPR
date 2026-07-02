@@ -93,7 +93,7 @@ export default async function ReviewsPage() {
                       {getStatusBadge(pr.status)}
                     </TableCell>
                     <TableCell className="text-slate-400 text-sm">
-                      {new Date(pr.createdAt).toLocaleString()}
+                      {new Date(pr.updatedAt).toLocaleString()}
                     </TableCell>
                     <TableCell className="text-right">
                       <a 
