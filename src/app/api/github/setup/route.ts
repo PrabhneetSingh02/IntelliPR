@@ -67,7 +67,6 @@ export async function GET(req: NextRequest) {
 
   } catch (error: any) {
     console.error('Error during GitHub setup:', error);
-    require('fs').writeFileSync('setup-error.txt', String(error?.stack || error));
     return NextResponse.json({ error: 'Failed to complete setup', details: String(error) }, { status: 500 });
   }
 }

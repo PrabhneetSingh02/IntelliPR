@@ -8,6 +8,9 @@ const redisConfig = {
 
 // Create a singleton instance to prevent multiple connections in dev
 const getRedisClient = () => {
+  if (process.env.REDIS_URL) {
+    return new Redis(process.env.REDIS_URL, { maxRetriesPerRequest: null });
+  }
   return new Redis(redisConfig);
 };
 
