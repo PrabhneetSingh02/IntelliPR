@@ -7,7 +7,9 @@
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
-    "worker": "esbuild src/workers/reviewWorker.ts --bundle --platform=node --outdir=dist && node --env-file=.env dist/reviewWorker.js"
+    "worker:build": "esbuild src/workers/reviewWorker.ts --bundle --platform=node --outdir=dist",
+    "worker:start": "node dist/reviewWorker.js",
+    "worker": "npm run worker:build && node --env-file=.env dist/reviewWorker.js"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.1",
