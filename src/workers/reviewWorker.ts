@@ -16,7 +16,7 @@ const worker = new Worker<ReviewPRJobData>(
     try {
       // 1. Fetch the diff
       const diffStr = await fetchPullRequestDiff(installationId, owner, repo, pullRequestNumber);
-      
+
       if (!diffStr || diffStr.trim() === '') {
         console.log('Empty diff, skipping review.');
         await updatePRStatus(repositoryId, pullRequestNumber, 'reviewed');
@@ -80,4 +80,22 @@ process.on('SIGINT', async () => {
   console.log('Shutting down worker...');
   await worker.close();
   process.exit(0);
+});
+
+// --- HEALTH ENDPOINT (FOR HOSTING) ---
+import http from 'http';
+const PORT = process.env.PORT || 8080;
+http.createServer((req, res) => {
+  if (req.url === '/health' || req.url === '/') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({
+      status: 'healthy',
+      uptime: process.uptime()
+    }));
+  } else {
+    res.writeHead(404);
+    res.end();
+  }
+}).listen(PORT, () => {
+  console.log(`Health endpoint listening on port ${PORT}`);
 });
