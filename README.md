@@ -2,6 +2,8 @@
 
 IntelliPR is an automated, AI-powered Pull Request reviewer that seamlessly integrates with GitHub. By leveraging the power of Google's Gemini AI, it automatically analyzes new Pull Requests, detects bugs, security vulnerabilities, and architectural flaws, and posts a detailed code review directly to GitHub.
 
+**🌍 Live Demo:** [https://intelli-pr.vercel.app](https://intelli-pr.vercel.app)
+
 ## ✨ Features
 
 - **Automated Code Reviews**: Instantly reviews code changes using Gemini 2.5 Flash.
